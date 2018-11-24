@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using AutoMapper;
+using FintecDemo.API.Configuration;
 using FintecDemo.API.Database;
 using FintecDemo.API.Repositories;
 using FintecDemo.API.Services;
@@ -26,6 +27,13 @@ namespace FintecDemo.API
 
         public IConfiguration Configuration { get; }
 
+        private CorsConfiguration _GetCorsConfiguration()
+        {
+            var corsConfig = new CorsConfiguration();
+            Configuration.GetSection("cors").Bind(corsConfig);
+            return corsConfig;
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -41,6 +49,11 @@ namespace FintecDemo.API
                 .AddScoped<IStockService, StockService>();
 
             AddResponseCompression(services);
+            if (!_GetCorsConfiguration().Disable)
+            {
+                services.AddCors();
+            }
+
             services.AddAutoMapper(config => { config.CreateMissingTypeMaps = false; });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -64,6 +77,40 @@ namespace FintecDemo.API
                 options.RoutePrefix = "docs";
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "FinTec Demo API");
             });
+            var corsConfig = _GetCorsConfiguration();
+            if (!corsConfig.Disable)
+            {
+                app.UseCors(options =>
+                {
+                    if (corsConfig.AllowAnyOrigin)
+                    {
+                        options.AllowAnyOrigin();
+                    }
+                    else
+                    {
+                        options.WithOrigins(corsConfig.Origins);
+                    }
+
+                    if (corsConfig.AllowAnyHeader)
+                    {
+                        options.AllowAnyHeader();
+                    }
+                    else
+                    {
+                        options.WithHeaders(corsConfig.Headers);
+                    }
+
+                    if (corsConfig.AllowAnyMethod)
+                    {
+                        options.AllowAnyMethod();
+                    }
+                    else
+                    {
+                        options.WithMethods(corsConfig.Methods);
+                    }
+                });
+            }
+
             app.UseResponseCompression();
             app.UseHttpsRedirection();
             app.UseMvc();
