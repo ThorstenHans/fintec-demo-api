@@ -14,5 +14,5 @@ steps:
   displayName: 'docker build and publish: fintec-demo-api'
 - script: |
         docker login -u $(dockerId) -p $(dockerPwd)
-        docker build -f Dockerfile --build-arg CONFIGURATION=Debug -t $(imageName) .
+        docker build -f Dockerfile --build-arg CONFIGURATION=Debug -t $(dockerId)/$(imageName) .
         docker push $(dockerId)/$(imageName)
