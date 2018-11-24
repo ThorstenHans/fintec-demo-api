@@ -5,6 +5,7 @@
         <AspNetCoreHostingModel>inprocess</AspNetCoreHostingModel>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
+        <Version>0.0.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
