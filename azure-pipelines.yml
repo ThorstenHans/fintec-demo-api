@@ -8,12 +8,11 @@ pool:
 
 variables:
   imageName: 'fintec-demo-api:development-$(build.buildId)'
-  dockerId:
-  dockerPwd:
 
 steps:
-- script: docker build -f Dockerfile --build-arg CONFIGURATION=Debug -t $(imageName) .
-  displayName: 'docker build: fintec-demo-api'
+- script:
+  displayName: 'docker build and publish: fintec-demo-api'
 - script: |
         docker login -u $(dockerId) -p $(dockerPwd)
+        docker build -f Dockerfile --build-arg CONFIGURATION=Debug -t $(imageName) .
         docker push $(dockerId)/$(imageName)
