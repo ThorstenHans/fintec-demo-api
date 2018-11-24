@@ -14,6 +14,7 @@ namespace FintecDemo.API
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine(typeof(Program).Assembly.GetName().Version.ToString());
             CreateWebHostBuilder(args).Build().Run();
         }
 
