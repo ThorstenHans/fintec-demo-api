@@ -1,5 +1,7 @@
 # FinTec Demo API
 
+[![Build Status](https://dev.azure.com/thns/fintec-demo/_apis/build/status/api-develop-ci)](https://dev.azure.com/thns/fintec-demo/_build/latest?definitionId=2)
+
 The _FinTec Demo API_ exposes data from financial domain for demonstration purpose. It has been built using .NET Core and is licensed under [MIT License](./LICENSE).
 
 ## Dependencies
