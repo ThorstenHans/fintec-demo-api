@@ -10,7 +10,6 @@ variables:
   imageName: 'fintec-demo-api:development-$(build.buildId)'
 
 steps:
-- script:
   displayName: 'docker build and publish: fintec-demo-api'
 - script: |
         docker login -u $(dockerId) -p $(dockerPwd)
